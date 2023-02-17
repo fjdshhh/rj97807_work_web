@@ -10,7 +10,6 @@ import { Breadcrumb, Layout, Menu } from "antd";
 const { Header, Content, Sider } = Layout;
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
-
 root.render(
   <Provider store={store}>
     <Layout className="BasicBox">
@@ -21,17 +20,11 @@ root.render(
           <Menu>3</Menu>
         </Sider>
         <Layout>
-          <Breadcrumb>
-            <Breadcrumb.Item>4</Breadcrumb.Item>
-            <Breadcrumb.Item>5</Breadcrumb.Item>
-          </Breadcrumb>
-          <Content>
-            <BrowserRouter>
-              <Routes>
-                <Route path="/" element={<Main></Main>}></Route>
-              </Routes>
-            </BrowserRouter>
-          </Content>
+          <BrowserRouter>
+            <Routes>
+              <Route path="/" element={<Main></Main>}></Route>
+            </Routes>
+          </BrowserRouter>
         </Layout>
       </Layout>
     </Layout>

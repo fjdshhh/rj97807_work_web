@@ -1,0 +1,15 @@
+.mainBox {
+  height: 100%;
+}
+.broadTool {
+  height: 5%;
+  display: inline-block;
+  ol {
+    display: flex;
+    align-items: center;
+  }
+}
+.article {
+  height: 95%;
+  overflow-y: auto;
+}
