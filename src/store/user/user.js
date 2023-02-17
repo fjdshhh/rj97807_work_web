@@ -1,7 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 // 创建一个状态切片
-export const userSlice = createSlice({
+const userSlice = createSlice({
   name: "userState",
   initialState: {
     Name: "",
@@ -17,3 +17,4 @@ export const userSlice = createSlice({
     },
   },
 });
+export default userSlice;

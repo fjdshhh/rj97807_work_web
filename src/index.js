@@ -4,7 +4,7 @@ import "./styles/index.scss";
 import "./index.scss";
 import Main from "./views/main/index";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import { store } from "./store";
+import store from "./store";
 import { Provider } from "react-redux";
 import { Breadcrumb, Layout, Menu } from "antd";
 const { Header, Content, Sider } = Layout;
