@@ -1,20 +1,26 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 // 创建一个状态切片
-const userSlice = createSlice({
+export const userSlice = createSlice({
   name: "userState",
   initialState: {
     Name: "",
     Token: "",
     ReToken: "",
+    isLogin: false,
   },
   reducers: {
-    setUserInfo: (state, value) => {
-      return { ...state, ...value };
+    setUserInfo: (state, { payload }) => {
+      return { ...state, ...payload };
     },
     getUserInfo: (state) => {
       return state;
     },
   },
 });
-export default userSlice;
+
+// 导出方法
+export const { setUserInfo, getUserInfo } = userSlice.actions;
+
+// 导出Slice
+export default userSlice.reducer;

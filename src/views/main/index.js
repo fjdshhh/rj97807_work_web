@@ -3,9 +3,16 @@ import { Breadcrumb, Layout, Button } from "antd";
 import style from "./index.module.scss";
 import { getArticleList } from "../../apis/articleApi";
 import { List } from "antd";
+// 引入相关的hooks
+import { useSelector } from "react-redux";
+// 引入相关方法
+import { useNavigate } from "react-router-dom";
 
 export default function Main() {
-  const { Header, Content, Sider } = Layout;
+  // 默认生成
+  const { Content } = Layout;
+
+  const navigate = useNavigate();
   // 文章列表
   const [articleList, setarticleList] = useState([]);
   // 总数
@@ -13,6 +20,8 @@ export default function Main() {
     totalNum: 0,
     totalSize: 0,
   });
+  // redux
+  const userValue = useSelector((store) => store.userState);
   // 请求参数
   const [params, setParams] = useState({
     pageSize: 10,
@@ -20,9 +29,16 @@ export default function Main() {
   });
 
   useEffect(() => {
+    if (userValue.isLogin === true && userValue.Name === "") {
+      navigate("/login");
+    }
+    if (userValue.Name !== "" && userValue.isLogin === true) {
+      // TODO 确认登录开始加载左侧列表
+    }
+
     getArticle();
     return () => {};
-  }, [params]);
+  }, [params, userValue]);
 
   async function getArticle() {
     let res = await getArticleList(params);
@@ -34,6 +50,7 @@ export default function Main() {
       });
     }
   }
+
   // 打开页面
   function openArticle(val) {
     window.open(val);

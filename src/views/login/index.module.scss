@@ -1,0 +1,16 @@
+.siteBox {
+  width: 460px;
+  height: 50%;
+  margin: 0 auto;
+  position: relative;
+  top: 25%;
+}
+.buttons {
+  display: flex;
+  justify-content: center;
+}
+.sendCode {
+  > span {
+    display: flex !important;
+  }
+}
