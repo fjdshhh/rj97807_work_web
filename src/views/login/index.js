@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import style from "./index.module.scss";
 import { Input, Button, message } from "antd";
-import { userLogin } from "../../apis/userApi";
+import { userLogin, userSendCode, userRegister } from "../../apis/userApi";
 
 import { useDispatch, useSelector } from "react-redux";
 import { setUserInfo } from "../../store/user/user";
@@ -15,7 +15,7 @@ export default function Login() {
   // redux
   const userValue = useSelector((store) => store.userState);
   useEffect(() => {
-    if (userValue.Name !== "" && userValue.isLogin === true) {
+    if (userValue.Name !== "") {
       navigate("/");
     }
     return () => {};
@@ -95,6 +95,28 @@ export default function Login() {
     const [userpwd, setUserpwd] = useState("");
     const [useremail, setUseremail] = useState("");
     const [code, setCode] = useState("");
+    // 发送验证码
+    async function getCode() {
+      let res = await userSendCode({ name: username, email: useremail });
+      console.log(res);
+      if (res !== undefined) {
+        message.success("验证码已发送，请查收");
+      }
+    }
+    // 完成注册
+    async function submitRegister() {
+      let res = await userRegister({
+        name: username,
+        pwd: userpwd,
+        email: useremail,
+        code: code,
+      });
+      console.log(res);
+      if (res !== undefined) {
+        message.success(res.data.message);
+        submitLogin(username, userpwd);
+      }
+    }
     return (
       <div>
         <h2>我要注册</h2>
@@ -128,7 +150,14 @@ export default function Login() {
                 setCode(e.target.value);
               }}
             />
-            <Button type="primary">发送验证码</Button>
+            <Button
+              type="primary"
+              onClick={() => {
+                getCode();
+              }}
+            >
+              发送验证码
+            </Button>
           </Input.Group>
         </div>
 
@@ -140,7 +169,13 @@ export default function Login() {
           >
             去登录
           </Button>
-          <Button>注册</Button>
+          <Button
+            onClick={() => {
+              submitRegister();
+            }}
+          >
+            注册
+          </Button>
         </div>
       </div>
     );

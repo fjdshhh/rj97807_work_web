@@ -94,7 +94,7 @@ export default function Main() {
     );
   };
   const ShowMent = menu.map((item) => {
-    return <li>{item.name}</li>;
+    return <li key={"menuChar" + item.menuChar}>{item.name}</li>;
   });
   return (
     <div className={style.mainBox}>
