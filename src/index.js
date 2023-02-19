@@ -20,8 +20,7 @@ root.render(
       </Header>
       <Layout>
         <Sider theme="light">
-          <Menu>2</Menu>
-          <Menu>3</Menu>
+          <Menu></Menu>
         </Sider>
         <Layout>
           <BrowserRouter>

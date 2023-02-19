@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Breadcrumb, Layout, Button } from "antd";
 import style from "./index.module.scss";
 import { getArticleList } from "../../apis/articleApi";
+import { userRoles } from "../../apis/userApi";
 import { List } from "antd";
 // 引入相关的hooks
 import { useSelector } from "react-redux";
@@ -15,6 +16,8 @@ export default function Main() {
   const navigate = useNavigate();
   // 文章列表
   const [articleList, setarticleList] = useState([]);
+  // 用户权限下的分类
+  const [menu, setMenu] = useState([]);
   // 总数
   const [articleParams, setArticleParams] = useState({
     totalNum: 0,
@@ -34,8 +37,8 @@ export default function Main() {
     }
     if (userValue.Name !== "" && userValue.isLogin === true) {
       // TODO 确认登录开始加载左侧列表
+      getMenu();
     }
-
     getArticle();
     return () => {};
   }, [params, userValue]);
@@ -48,6 +51,12 @@ export default function Main() {
         totalNum: res.data.totalNum,
         totalSize: res.data.totalSize,
       });
+    }
+  }
+  async function getMenu() {
+    let res = await userRoles();
+    if (res !== undefined) {
+      setMenu(res.data.data);
     }
   }
 
@@ -84,7 +93,9 @@ export default function Main() {
       />
     );
   };
-
+  const ShowMent = menu.map((item) => {
+    return <li>{item.name}</li>;
+  });
   return (
     <div className={style.mainBox}>
       <div>
@@ -110,6 +121,7 @@ export default function Main() {
       <Content className={style.article}>
         <ShowArticle />
       </Content>
+      <ul className={style.menu}>{ShowMent}</ul>
     </div>
   );
 }

@@ -6,6 +6,8 @@ import { userLogin } from "../../apis/userApi";
 import { useDispatch, useSelector } from "react-redux";
 import { setUserInfo } from "../../store/user/user";
 import { useNavigate } from "react-router-dom";
+
+import { addAuthorization } from "../../apis/request";
 export default function Login() {
   const [isLogin, setIsLogin] = useState(true);
   const dispatch = useDispatch();
@@ -39,6 +41,7 @@ export default function Login() {
           ReToken: res.data.reToken,
         })
       );
+      addAuthorization(res.data.token);
       message.success("登录成功");
     } else {
       // 登录失败

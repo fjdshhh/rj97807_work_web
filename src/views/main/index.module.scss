@@ -10,6 +10,14 @@
   }
 }
 .article {
-  height: 95%;
+  height: 90%;
   overflow-y: auto;
+}
+.menu {
+  height: 5%;
+  width: 100%;
+  display: flex;
+  li{
+    width: 50px;
+  }
 }
