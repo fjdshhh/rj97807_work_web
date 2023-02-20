@@ -4,10 +4,13 @@ import style from "./index.module.scss";
 import { getArticleList } from "../../apis/articleApi";
 import { userRoles } from "../../apis/userApi";
 import { List } from "antd";
+import ChatBox from "../../components/rightBox/index";
 // 引入相关的hooks
 import { useSelector } from "react-redux";
 // 引入相关方法
 import { useNavigate } from "react-router-dom";
+// 引入socket
+import socket from "../../apis/webSocket";
 
 export default function Main() {
   // 默认生成
@@ -30,7 +33,9 @@ export default function Main() {
     pageSize: 10,
     pageNum: 1,
   });
-
+  // socket得到的消息
+  const [socketMsg, setSocketMsg] = useState({});
+  // 用户侧的生命周期
   useEffect(() => {
     if (userValue.isLogin === true && userValue.Name === "") {
       navigate("/login");
@@ -39,20 +44,47 @@ export default function Main() {
       // TODO 确认登录开始加载左侧列表
       getMenu();
     }
+    //
+    return () => {};
+  }, [userValue, navigate]);
+
+  // 文章的生命周期
+  useEffect(() => {
+    async function getArticle() {
+      let res = await getArticleList(params);
+      if (res.status === 200) {
+        setarticleList(res.data.data);
+        setArticleParams({
+          totalNum: res.data.totalNum,
+          totalSize: res.data.totalSize,
+        });
+      }
+    }
     getArticle();
     return () => {};
-  }, [params, userValue]);
+  }, [params]);
 
-  async function getArticle() {
-    let res = await getArticleList(params);
-    if (res.status === 200) {
-      setarticleList(res.data.data);
-      setArticleParams({
-        totalNum: res.data.totalNum,
-        totalSize: res.data.totalSize,
-      });
-    }
-  }
+  // socket的生命周期
+  useEffect(() => {
+    socket.onopen = (e) => {
+      console.log("socket打开", e);
+    };
+    socket.onmessage = (msg) => {
+      console.log("socket收到", msg);
+      setSocketMsg(JSON.parse(msg.data));
+    };
+    socket.onclose = (e) => {
+      console.log("socket关闭", e);
+    };
+    socket.onerror = (msg) => {
+      console.log("socket发生错误", msg);
+    };
+    return () => {
+      // socket.emit("message", ".exit");
+    };
+  }, [socketMsg]);
+
+  // 角色下关联的分类
   async function getMenu() {
     let res = await userRoles();
     if (res !== undefined) {
@@ -122,6 +154,9 @@ export default function Main() {
         <ShowArticle />
       </Content>
       <ul className={style.menu}>{ShowMent}</ul>
+      <div className={style.socketBox}>
+        <ChatBox msg={socketMsg} so={socket}></ChatBox>
+      </div>
     </div>
   );
 }

@@ -2,7 +2,7 @@ import React from "react";
 import { Input, Avatar } from "antd";
 import { UserOutlined } from "@ant-design/icons";
 import style from "./index.module.scss";
-
+import { Button, message } from "antd";
 // 引入相关hook
 import { useDispatch, useSelector } from "react-redux";
 // 引入相关方法
@@ -22,7 +22,12 @@ export default function Index() {
 
   const SwitchAvatar = () => {
     if (userValue.Name != "") {
-      return <div>{userValue.Name}</div>;
+      return (
+        <div>
+          <Button>点我上传文件</Button>
+          <span>我是:{userValue.Name}</span>
+        </div>
+      );
     } else {
       return (
         <Avatar
