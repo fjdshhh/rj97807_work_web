@@ -1,8 +1,9 @@
 import React from "react";
-import { Input, Avatar } from "antd";
+import { Input, Avatar, Upload } from "antd";
 import { UserOutlined } from "@ant-design/icons";
 import style from "./index.module.scss";
 import { Button, message } from "antd";
+import { fileUpload } from "../../apis/userApi";
 // 引入相关hook
 import { useDispatch, useSelector } from "react-redux";
 // 引入相关方法
@@ -19,12 +20,32 @@ export default function Index() {
   const Search = () => {
     return <Input placeholder="这是一个搜索框" />;
   };
-
+  const props = {
+    // 单文件上传
+    beforeUpload: async (file) => {
+      const form = new FormData();
+      form.append("file", file);
+      console.log(form);
+      let res = await fileUpload(form, {
+        headers: {
+          ContentType: "multipart/form-data",
+        },
+      });
+      if (res.status === 200) {
+        message.success("上传成功");
+      } else {
+        message.error("上传失败");
+      }
+    },
+  };
   const SwitchAvatar = () => {
     if (userValue.Name != "") {
       return (
-        <div>
-          <Button>点我上传文件</Button>
+        <div className={style.rightBox}>
+          <Upload {...props}>
+            <Button>Select File</Button>
+          </Upload>
+
           <span>我是:{userValue.Name}</span>
         </div>
       );

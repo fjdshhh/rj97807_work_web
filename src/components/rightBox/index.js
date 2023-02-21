@@ -5,13 +5,12 @@ export default function ChatBox(prop) {
   const [msgList, setMsgList] = useState([]);
   const [submitMsg, setSubmitMsg] = useState("");
   useEffect(() => {
-    console.log(prop);
-    if (prop.msg.message != null) {
+    if (prop.msg.message != undefined) {
       console.log("存", prop.msg.message);
       setMsgList([...msgList, prop.msg.message]);
     }
     return () => {};
-  }, [prop]);
+  }, [prop.msg]);
 
   // useEffect(() => {
   //   function ListItem() {
@@ -25,9 +24,9 @@ export default function ChatBox(prop) {
 
   return (
     <div className={style.box}>
-      <ul>
-        {msgList.map((item) => {
-          return <li key={item}>{item}</li>;
+      <ul className={style.msgBox}>
+        {msgList.map((item, index) => {
+          return <li key={index}>{item}</li>;
         })}
       </ul>
       <Input.Group className={style.submit}>
@@ -41,8 +40,11 @@ export default function ChatBox(prop) {
         <Button
           type="primary"
           onClick={() => {
-            prop.so.send(JSON.stringify({ message: submitMsg }));
-            setMsgList([...msgList, submitMsg]);
+            if (submitMsg !== "") {
+              prop.so.send(JSON.stringify({ message: submitMsg }));
+              setMsgList([...msgList, submitMsg]);
+              setSubmitMsg("");
+            }
           }}
         >
           发送
