@@ -39,7 +39,7 @@ export default function Index() {
     },
   };
   const SwitchAvatar = () => {
-    if (userValue.Name != "") {
+    if (userValue.Name !== "") {
       return (
         <div className={style.rightBox}>
           <Upload {...props}>

@@ -5,7 +5,7 @@ export default function ChatBox(prop) {
   const [msgList, setMsgList] = useState([]);
   const [submitMsg, setSubmitMsg] = useState("");
   useEffect(() => {
-    if (prop.msg.message != undefined) {
+    if (prop.msg.message != undefined && prop.msg.message !== "pong") {
       console.log("存", prop.msg.message);
       setMsgList([...msgList, prop.msg.message]);
     }
@@ -21,7 +21,12 @@ export default function ChatBox(prop) {
   //   ListItem();
   //   return () => {};
   // }, [msgList]);
-
+  useEffect(() => {
+    setInterval(() => {
+      prop.so.send(JSON.stringify({ message: "ping" }));
+    }, 5000);
+    return () => {};
+  }, []);
   return (
     <div className={style.box}>
       <ul className={style.msgBox}>
